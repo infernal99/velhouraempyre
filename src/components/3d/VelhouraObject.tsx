@@ -1,18 +1,32 @@
 "use client";
 
 import { useMemo, useRef } from "react";
-import type { RefObject } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import * as THREE from "three";
 import type { HeroSceneValues } from "./theatre";
 
+/** One frame's worth of drag input, already consumed (`dx`/`dy` are the
+ *  delta since the last call, not a running total). */
+export type DragSample = {
+  active: boolean;
+  dx: number;
+  dy: number;
+};
+
 type VelhouraObjectProps = {
   values: HeroSceneValues;
   /** 0 → 1 entrance progress, eased, driven by the parent's clock. */
   intro: number;
-  /** Normalised pointer, −1..1. Zero on touch/coarse pointers. */
-  pointer: RefObject<{ x: number; y: number }>;
+  /**
+   * Pulls and resets the accumulated drag delta for this frame. A function
+   * rather than the raw ref: the ref that backs it is created and owned by
+   * `VelhouraScene`, and this project's lint rules (react-hooks/immutability)
+   * forbid mutating a ref's contents from outside the component that
+   * constructed it — so the reset happens inside that function, in the
+   * owning component, and this component only ever reads its return value.
+   */
+  consumeDrag: () => DragSample;
   /** Fewer sphere segments on constrained devices. */
   detail: "high" | "low";
 };
@@ -20,24 +34,28 @@ type VelhouraObjectProps = {
 const EARTH_RADIUS = 1.15;
 const ATMOSPHERE_RADIUS = EARTH_RADIUS * 1.055;
 
+/** Clamp how far the planet can be tipped forward/back while dragging, so it
+ *  never flips pole-over-pole — a real globe's handling, not a video-game
+ *  free camera. */
+const MAX_TILT = 1.15;
+
 /**
  * Velhoura's hero centerpiece: a realistic, textured Earth with a thin
  * Fresnel atmosphere glow — a small, elegant technology/scale motif rather
  * than a literal product render.
  *
- * `Float` (drei) supplies the organic idle drift; this component layers the
- * planet's own slow axial spin (independent of Float, on the mesh's own
- * rotation) plus a deliberately subtle pointer-following tilt on the outer
- * group, so the self-rotation always reads as the dominant motion.
+ * `Float` (drei) supplies the organic idle drift. On top of that, the planet
+ * spins continuously and slowly on its own; dragging (mouse or touch, via the
+ * hotspot in `VelhouraScene`) pauses that auto-spin and turns the globe
+ * directly instead, resuming from wherever it was released.
  */
 export function VelhouraObject({
   values,
   intro,
-  pointer,
+  consumeDrag,
   detail,
 }: VelhouraObjectProps) {
   const outer = useRef<THREE.Group>(null);
-  const tilt = useRef({ x: 0, y: 0 });
   const earthRef = useRef<THREE.Mesh>(null);
   const atmosphereMaterial = useRef<THREE.ShaderMaterial>(null);
 
@@ -75,29 +93,31 @@ export function VelhouraObject({
     const group = outer.current;
     if (!group) return;
 
-    // Pointer tilt: lerp toward target, kept small so the planet's own spin
-    // — not the cursor — is what the eye reads as the primary motion.
-    const targetX = pointer.current.y * values.tiltStrength;
-    const targetY = pointer.current.x * values.tiltStrength;
-    tilt.current.x += (targetX - tilt.current.x) * Math.min(delta * 3, 1);
-    tilt.current.y += (targetY - tilt.current.y) * Math.min(delta * 3, 1);
-
-    // Direct-set (not accumulated) from the pointer: this is the group's
-    // whole-scene tilt, independent of the Earth mesh's own continuous spin
-    // below, which lives on that mesh's local rotation instead.
-    group.rotation.x = tilt.current.x;
-    group.rotation.y = tilt.current.y;
-
     // Entrance: scale/opacity driven by the eased progress from the parent.
     const s = intro;
     group.scale.setScalar(0.72 + s * 0.28);
 
-    // The planet's own axial spin — continuous, slow, independent of the
-    // pointer tilt above (that rotates the outer group; this rotates the
-    // sphere's own local Y axis).
-    if (earthRef.current) {
-      earthRef.current.rotation.y += values.rotationSpeed * delta;
-      const mat = earthRef.current.material as THREE.MeshStandardMaterial;
+    const earth = earthRef.current;
+    if (earth) {
+      const sample = consumeDrag();
+
+      if (sample.dx !== 0 || sample.dy !== 0) {
+        // A drag in flight: turn the globe directly by the pixel delta
+        // since the last frame. Auto-spin is skipped this frame — the drag
+        // is what's driving the rotation.
+        earth.rotation.y += sample.dx * values.dragSensitivity;
+        earth.rotation.x = THREE.MathUtils.clamp(
+          earth.rotation.x + sample.dy * values.dragSensitivity,
+          -MAX_TILT,
+          MAX_TILT,
+        );
+      } else if (!sample.active) {
+        // Nothing to consume and no pointer currently down: resume the
+        // planet's own slow spin from wherever it was left.
+        earth.rotation.y += values.rotationSpeed * delta;
+      }
+
+      const mat = earth.material as THREE.MeshStandardMaterial;
       mat.opacity = s;
     }
 
