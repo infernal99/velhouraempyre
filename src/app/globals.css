@@ -1,26 +1,308 @@
 @import "tailwindcss";
 
+/* ============================================================
+   VELHOURA — DESIGN SYSTEM
+   Light, premium, technical. Ink on paper with one signal accent.
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces */
+  --paper: #ffffff;
+  --paper-off: #fafaf9;
+  --paper-sunk: #f4f4f2;
+  --line: #e7e7e4;
+  --line-strong: #d6d6d2;
+
+  /* Ink */
+  --ink: #08090a;
+  --ink-soft: #3d4045;
+  --ink-mute: #797d84;
+  --ink-faint: #a6aab0;
+
+  /* Signal — used sparingly. Velhoura's single accent. */
+  --signal: #0b46ff;
+  --signal-deep: #0730b8;
+  --signal-wash: #eef2ff;
+
+  /* Motion language */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-swift: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* Rhythm */
+  --shell: 1240px;
+  --gutter: 24px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper);
+  --color-paper-off: var(--paper-off);
+  --color-paper-sunk: var(--paper-sunk);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-mute: var(--ink-mute);
+  --color-ink-faint: var(--ink-faint);
+  --color-signal: var(--signal);
+  --color-signal-deep: var(--signal-deep);
+  --color-signal-wash: var(--signal-wash);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Page shell -------------------------------------------------- */
+  .shell {
+    width: 100%;
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  @media (min-width: 768px) {
+    .shell {
+      padding-inline: 40px;
+    }
+  }
+
+  /* Type scale — tight, optical, Apple-adjacent ------------------ */
+  .t-display {
+    font-size: clamp(2.75rem, 11vw, 8.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+    font-weight: 600;
+  }
+
+  .t-h1 {
+    font-size: clamp(2.1rem, 6.2vw, 4.5rem);
+    line-height: 1.03;
+    letter-spacing: -0.035em;
+    font-weight: 600;
+  }
+
+  .t-h2 {
+    font-size: clamp(1.65rem, 3.6vw, 2.75rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    font-weight: 600;
+  }
+
+  .t-h3 {
+    font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    font-weight: 550;
+  }
+
+  .t-lead {
+    font-size: clamp(1.0625rem, 1.5vw, 1.3125rem);
+    line-height: 1.5;
+    letter-spacing: -0.012em;
+    color: var(--ink-soft);
+  }
+
+  .t-body {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+
+  /* Eyebrow / index label --------------------------------------- */
+  .t-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    font-weight: 500;
+  }
+
+  /* Hairline rules ---------------------------------------------- */
+  .rule {
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* Section rhythm ---------------------------------------------- */
+  .band {
+    padding-block: clamp(88px, 13vw, 180px);
+  }
+
+  .band-tight {
+    padding-block: clamp(64px, 9vw, 120px);
+  }
+}
+
+@layer utilities {
+  /* Reveal-on-scroll primitive. Driven by IntersectionObserver,
+     animated purely on the compositor (opacity + transform). */
+  .reveal {
+    opacity: 0;
+    transform: translate3d(0, var(--reveal-y, 22px), 0);
+    transition:
+      opacity 0.9s var(--ease-out-expo) var(--reveal-delay, 0ms),
+      transform 0.9s var(--ease-out-expo) var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+
+  .reveal[data-shown="true"] {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    will-change: auto;
+  }
+
+  /* Mask-based line-by-line title reveal */
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    /* Descenders would otherwise be clipped by the mask. */
+    padding-bottom: 0.09em;
+  }
+
+  .line-mask > span {
+    display: block;
+    transform: translate3d(0, 105%, 0);
+    transition: transform 1.05s var(--ease-out-expo) var(--reveal-delay, 0ms);
+  }
+
+  [data-shown="true"] .line-mask > span,
+  .line-mask[data-shown="true"] > span {
+    transform: translate3d(0, 0, 0);
+  }
+
+  /* Velocity streak — the motorsport cue, kept to a hairline */
+  .streak {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--signal) 55%, transparent),
+      transparent
+    );
+  }
+
+  .grain {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      color-mix(in oklab, var(--ink) 7%, transparent) 1px,
+      transparent 0
+    );
+    background-size: 22px 22px;
+  }
+
+  /* Entrance animations for above-the-fold content.
+     Deliberately CSS rather than JS: they need no rAF, survive a background
+     tab, and resolve to their final state even if JS never runs. */
+  @keyframes v-rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 26px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes v-unmask {
+    from {
+      transform: translate3d(0, 105%, 0);
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  @keyframes v-cue {
+    0% {
+      transform: translate3d(0, -100%, 0);
+    }
+    100% {
+      transform: translate3d(0, 260%, 0);
+    }
+  }
+
+  .anim-rise {
+    animation: v-rise 1s var(--ease-out-expo) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  .anim-unmask {
+    animation: v-unmask 1.15s var(--ease-out-expo) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  .anim-cue {
+    animation: v-cue 2.1s var(--ease-out-expo) infinite;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+}
+
+/* Respect the user's motion preference — everything resolves to
+   its final state instantly, nothing is left invisible. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .line-mask > span {
+    transform: none;
+  }
 }
