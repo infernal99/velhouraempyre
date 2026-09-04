@@ -37,16 +37,16 @@ export const heroSceneObject = sheet.object("Centerpiece", {
   introDuration: types.number(1.4, { range: [0.6, 3], nudgeMultiplier: 0.05 }),
   introDelay: types.number(0.15, { range: [0, 1.5], nudgeMultiplier: 0.05 }),
 
-  // Idle motion — slow and steady by design: this drives a planet's axial
-  // spin, not an abstract object's tumble, so it stays well below what would
-  // read as "fast" even at the top of its Theatre-editable range.
+  // Idle motion — a planet's axial spin, not an abstract object's tumble, so
+  // even a brisker default stays well short of "fast".
   floatSpeed: types.number(0.7, { range: [0, 3], nudgeMultiplier: 0.05 }),
   floatIntensity: types.number(0.32, { range: [0, 2], nudgeMultiplier: 0.05 }),
-  rotationSpeed: types.number(0.035, { range: [0, 0.3], nudgeMultiplier: 0.005 }),
+  rotationSpeed: types.number(0.07, { range: [0, 0.3], nudgeMultiplier: 0.005 }),
 
-  // Pointer interaction — deliberately gentle: the planet's own rotation
-  // should always read as the dominant motion, the cursor only nudges it.
-  tiltStrength: types.number(0.09, { range: [0, 0.4], nudgeMultiplier: 0.01 }),
+  // Drag-to-rotate: radians of rotation per pixel of pointer/touch movement
+  // while dragging. Auto-spin pauses for the duration of the drag and
+  // resumes from wherever it's released.
+  dragSensitivity: types.number(0.008, { range: [0.001, 0.02], nudgeMultiplier: 0.001 }),
 
   // Material / composition
   atmosphereOpacity: types.number(0.9, { range: [0.2, 1], nudgeMultiplier: 0.01 }),
