@@ -17,7 +17,18 @@ export function Hero() {
       <HeroBackdrop />
       <HeroSceneLoader />
 
-      <div className="shell relative">
+      {/*
+        `pointer-events-none` here, not just visual layout: block-level
+        elements (this h1/p/div stack) claim their full container width for
+        hit-testing even where the visible glyphs are left-aligned and the
+        rest is empty space — and this shell sits later in the DOM than
+        `HeroSceneLoader`, so it always wins that hit-test. Without this, the
+        3D layer's drag-to-rotate hotspot (which spans most of the right side
+        of the hero) would be blocked everywhere those invisible boxes reach,
+        leaving only a thin strip clear of them actually draggable. Re-enabled
+        just on the CTAs below, the only real interactive content in here.
+      */}
+      <div className="shell relative pointer-events-none">
         {/*
           Legibility guarantee for the text column against the 3D layer
           behind it. The centerpiece is intentionally large and roams close
@@ -92,7 +103,7 @@ export function Hero() {
         </p>
 
         <div
-          className="anim-rise mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
+          className="anim-rise pointer-events-auto mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
           style={{ "--d": "660ms" } as React.CSSProperties}
         >
           <ButtonLink href="#products" size="lg" arrow>
@@ -104,9 +115,12 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Scroll cue — desktop only; on a phone the thumb already knows. */}
+      {/* Scroll cue — desktop only; on a phone the thumb already knows.
+          `pointer-events-none`: purely decorative (no interactive content),
+          and being `.shell`-width it would otherwise block the drag hotspot
+          across its own invisible full-width box — see the note above. */}
       <div
-        className="anim-rise shell absolute inset-x-0 bottom-8 hidden items-end justify-between md:flex"
+        className="anim-rise shell pointer-events-none absolute inset-x-0 bottom-8 hidden items-end justify-between md:flex"
         style={{ "--d": "1100ms" } as React.CSSProperties}
       >
         <div className="flex items-center gap-3">
