@@ -1,4 +1,5 @@
 import { HeroBackdrop } from "@/components/visual/HeroBackdrop";
+import { HeroSceneLoader } from "@/components/3d/HeroSceneLoader";
 import { ButtonLink } from "@/components/ui/Button";
 
 /**
@@ -14,8 +15,38 @@ export function Hero() {
   return (
     <section className="relative isolate flex min-h-[100svh] flex-col justify-center overflow-hidden pt-28 pb-20 sm:pt-32">
       <HeroBackdrop />
+      <HeroSceneLoader />
 
       <div className="shell relative">
+        {/*
+          Legibility guarantee for the text column against the 3D layer
+          behind it. The centerpiece is intentionally large and roams close
+          to center via pointer tilt and drift — rather than trying to keep
+          its ever-changing footprint out of the text's bounding box (the
+          headline alone spans up to ~90% of the viewport width at desktop
+          sizes, leaving no reliable gap to dodge into), this soft, edgeless
+          scrim blurs and lightens whatever sits behind the text specifically.
+          It has no visible edge (feathered via mask-image) and reads as
+          atmosphere, not a panel — the 3D piece stays fully vivid in the
+          open space around and beyond it.
+        */}
+        <div
+          aria-hidden="true"
+          className={[
+            "pointer-events-none absolute rounded-[3rem] bg-paper/58 backdrop-blur-2xl",
+            // Mobile-first and deliberately generous: the text column stacks
+            // taller here (three-line paragraph, stacked buttons), so the
+            // scrim needs more vertical reach and a bigger fully-opaque core
+            // to keep every line clear of the object passing behind it.
+            "-inset-x-10 -inset-y-14",
+            "[mask-image:radial-gradient(ellipse_82%_90%_at_32%_46%,black_56%,transparent_94%)]",
+            // Tablet/desktop: verified clear with the tighter original
+            // coverage, so pull back in to let more of the object show.
+            "sm:-inset-x-12 sm:-inset-y-10",
+            "sm:[mask-image:radial-gradient(ellipse_72%_78%_at_28%_42%,black_45%,transparent_82%)]",
+          ].join(" ")}
+        />
+
         {/* Wordmark */}
         <p
           className="anim-rise font-mono text-[0.6875rem] font-medium tracking-[0.42em] text-ink-mute uppercase sm:text-xs"

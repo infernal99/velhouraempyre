@@ -1,7 +1,19 @@
 "use client";
 
-import { useEffect, useRef, type ElementType, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+
+/**
+ * Deliberately a small closed union rather than `ElementType`: this project
+ * also loads `@react-three/fiber`, which globally augments `JSX.IntrinsicElements`
+ * with every three.js element. That augmentation is ambient (applies to the
+ * whole app, not just files that import R3F) and is large enough that
+ * TypeScript's `JSX.LibraryManagedAttributes` resolution for a bare
+ * `ElementType`-typed, ref-forwarding polymorphic component collapses to
+ * `never`. Every current call site renders a block-level container anyway,
+ * so this union costs nothing in practice.
+ */
+type RevealTag = "div" | "span" | "li" | "article" | "section";
 
 type RevealProps = {
   children: ReactNode;
@@ -10,7 +22,7 @@ type RevealProps = {
   /** Travel distance in px. 0 gives a pure fade. */
   y?: number;
   className?: string;
-  as?: ElementType;
+  as?: RevealTag;
   /** Fire once and disconnect (default) or re-run on re-entry. */
   once?: boolean;
 };
@@ -56,7 +68,13 @@ export function Reveal({
 
   return (
     <Tag
-      ref={ref}
+      // A dynamic `Tag: RevealTag` can't be narrowed to one concrete
+      // element, so TS asks for a ref assignable to every tag's specific
+      // ref type at once. All five accept a plain HTMLElement ref at
+      // runtime — only generic Element APIs (IntersectionObserver,
+      // data-attributes) are ever used on it — so this cast is safe.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- see comment above
+      ref={ref as any}
       data-shown="false"
       className={cn("reveal", className)}
       style={
