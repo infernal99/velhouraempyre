@@ -37,19 +37,22 @@ export const heroSceneObject = sheet.object("Centerpiece", {
   introDuration: types.number(1.4, { range: [0.6, 3], nudgeMultiplier: 0.05 }),
   introDelay: types.number(0.15, { range: [0, 1.5], nudgeMultiplier: 0.05 }),
 
-  // Idle motion
-  floatSpeed: types.number(1.1, { range: [0, 3], nudgeMultiplier: 0.05 }),
-  floatIntensity: types.number(0.55, { range: [0, 2], nudgeMultiplier: 0.05 }),
-  rotationSpeed: types.number(0.11, { range: [0, 0.6], nudgeMultiplier: 0.01 }),
+  // Idle motion — slow and steady by design: this drives a planet's axial
+  // spin, not an abstract object's tumble, so it stays well below what would
+  // read as "fast" even at the top of its Theatre-editable range.
+  floatSpeed: types.number(0.7, { range: [0, 3], nudgeMultiplier: 0.05 }),
+  floatIntensity: types.number(0.32, { range: [0, 2], nudgeMultiplier: 0.05 }),
+  rotationSpeed: types.number(0.035, { range: [0, 0.3], nudgeMultiplier: 0.005 }),
 
-  // Pointer interaction
-  tiltStrength: types.number(0.22, { range: [0, 0.6], nudgeMultiplier: 0.01 }),
+  // Pointer interaction — deliberately gentle: the planet's own rotation
+  // should always read as the dominant motion, the cursor only nudges it.
+  tiltStrength: types.number(0.09, { range: [0, 0.4], nudgeMultiplier: 0.01 }),
 
   // Material / composition
-  ringOpacity: types.number(0.82, { range: [0.2, 1], nudgeMultiplier: 0.01 }),
-  coreMetalness: types.number(0.7, { range: [0, 1], nudgeMultiplier: 0.01 }),
+  atmosphereOpacity: types.number(0.9, { range: [0.2, 1], nudgeMultiplier: 0.01 }),
+  earthRoughness: types.number(0.82, { range: [0.4, 1], nudgeMultiplier: 0.01 }),
 
-  // Particles
+  // Particles ("stars" around the planet)
   particleCount: types.number(90, { range: [0, 220], nudgeMultiplier: 1 }),
 });
 
