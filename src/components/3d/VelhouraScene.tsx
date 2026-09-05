@@ -25,6 +25,7 @@ export function VelhouraScene() {
   const values = useHeroSceneValues();
   const [tier, setTier] = useState<Tier>("desktop");
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [finePointer, setFinePointer] = useState(false);
   const drag = useRef<DragSample>({ active: false, dx: 0, dy: 0 });
   const lastPoint = useRef({ x: 0, y: 0 });
 
@@ -36,21 +37,25 @@ export function VelhouraScene() {
     const widthMq = window.matchMedia("(max-width: 767px)");
     const tabletMq = window.matchMedia("(max-width: 1023px)");
     const motionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const pointerMq = window.matchMedia("(pointer: fine)");
 
     const sync = () => {
       setTier(widthMq.matches ? "mobile" : tabletMq.matches ? "tablet" : "desktop");
       setReducedMotion(motionMq.matches);
+      setFinePointer(pointerMq.matches);
     };
     sync();
 
     widthMq.addEventListener("change", sync);
     tabletMq.addEventListener("change", sync);
     motionMq.addEventListener("change", sync);
+    pointerMq.addEventListener("change", sync);
 
     return () => {
       widthMq.removeEventListener("change", sync);
       tabletMq.removeEventListener("change", sync);
       motionMq.removeEventListener("change", sync);
+      pointerMq.removeEventListener("change", sync);
     };
   }, []);
 
@@ -67,8 +72,13 @@ export function VelhouraScene() {
   // Biased right of dead-center (never fully centered, so it doesn't sit
   // exactly behind the wordmark) but much closer to it than an off-to-the-
   // side placement — the scrim behind the text is what keeps legibility
-  // intact, not distance from the object.
-  const cameraX = tier === "mobile" ? 0.3 : tier === "tablet" ? 0.7 : 1.0;
+  // intact, not distance from the object. Mobile sits further out than the
+  // other tiers: the text scrim there is a large, deliberately generous
+  // ellipse (tall stacked copy needs the reach — see Hero.tsx), and at a
+  // small offset the planet used to render almost entirely underneath it,
+  // barely visible. Pushed further out, it clears that blur instead of
+  // hiding behind it.
+  const cameraX = tier === "mobile" ? 0.95 : tier === "tablet" ? 0.7 : 1.0;
 
   // Drag handlers live on a plain DOM overlay rather than R3F's own pointer
   // events on the Earth mesh: the Canvas stays `pointer-events: none` across
@@ -112,21 +122,32 @@ export function VelhouraScene() {
 
   return (
     <>
-      <div
-        aria-hidden="true"
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-        className={[
-          // `pointer-events-auto` is load-bearing: the ancestor wrapper in
-          // `HeroSceneLoader` sets `pointer-events: none` so the rest of the
-          // hero stays click-through, and that value inherits by default —
-          // this is the one region of the layer that opts back in.
-          "absolute touch-none cursor-grab pointer-events-auto active:cursor-grabbing",
-          dragHotspotClass(tier),
-        ].join(" ")}
-      />
+      {/*
+        Fine-pointer only. On a touch device this hotspot would sit right
+        where a visitor's thumb naturally starts a scroll — `touch-action:
+        none` (needed so a drag isn't also read as a page scroll) would then
+        swallow that scroll gesture entirely wherever it began inside the
+        hotspot's box, which is large. Drag-to-rotate is a cursor nicety;
+        losing it on touch costs nothing, keeping the page scrollable there
+        does not.
+      */}
+      {finePointer && (
+        <div
+          aria-hidden="true"
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          className={[
+            // `pointer-events-auto` is load-bearing: the ancestor wrapper in
+            // `HeroSceneLoader` sets `pointer-events: none` so the rest of
+            // the hero stays click-through, and that value inherits by
+            // default — this is the one region of the layer that opts back in.
+            "absolute touch-none cursor-grab pointer-events-auto active:cursor-grabbing",
+            dragHotspotClass(tier),
+          ].join(" ")}
+        />
+      )}
 
       <Canvas
         dpr={dpr}
