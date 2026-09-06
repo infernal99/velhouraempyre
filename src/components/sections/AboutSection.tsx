@@ -1,3 +1,4 @@
+import { Arrow } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { team } from "@/data/team";
@@ -47,6 +48,18 @@ export function AboutSection() {
                   aria-hidden="true"
                   className="mt-8 block h-px w-10 bg-line-strong transition-[width] duration-700 ease-[var(--ease-expo)] group-hover:w-24"
                 />
+
+                {member.href && (
+                  <a
+                    href={member.href}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-ink transition-colors duration-300 hover:text-signal"
+                  >
+                    Ver portfolio
+                    <Arrow />
+                  </a>
+                )}
               </article>
             </Reveal>
           ))}
