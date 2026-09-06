@@ -93,16 +93,16 @@ export const products: Product[] = [
   {
     slug: "zhestar",
     name: "Zhestar",
-    summary: "Marca de streetwear en preparación — la web del primer drop, en cuenta atrás.",
+    summary: "Marca de ropa de gym en preparación — la web del primer drop, en cuenta atrás.",
     description:
-      "Zhestar es una marca de ropa en construcción. La web actual presenta el primer drop (\"Drop 001\") antes de su lanzamiento, sentando la identidad de marca y la mecánica de lanzamiento por colecciones limitadas que seguirá creciendo con cada drop.",
+      "Zhestar es una marca de ropa de gym en construcción. La web actual presenta el primer drop (\"Drop 001\") antes de su lanzamiento, sentando la identidad de marca y la mecánica de lanzamiento por colecciones limitadas que seguirá creciendo con cada drop.",
     category: "WEB",
     status: "COMING SOON",
     year: "2026",
     highlights: [
       "Identidad de marca",
+      "Ropa técnica de entrenamiento",
       "Mecánica de drops limitados",
-      "Web de lanzamiento",
     ],
     href: "https://www.zhestar.es/",
     accent: "#dc2626",
