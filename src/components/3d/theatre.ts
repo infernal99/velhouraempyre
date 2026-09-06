@@ -2,6 +2,7 @@
 
 import { getProject, types } from "@theatre/core";
 import { useEffect, useState } from "react";
+import theatreState from "./theatre-state.json";
 
 /**
  * Theatre.js control surface for the Hero's 3D scene.
@@ -26,8 +27,16 @@ import { useEffect, useState } from "react";
  */
 
 const project = getProject("Velhoura", {
-  // Values are visible in the dev Studio panel immediately; adjusting them
-  // there does not require this file to change.
+  // Required in production: without a `state`, Theatre.js throws an
+  // uncaught error one second after load in any browser that doesn't have
+  // Studio attached — i.e. every real visitor. This is an empty save-file
+  // (exported once via `studio.createContentOfSaveFile("Velhoura")`, see
+  // `theatre-state.json`) — there's nothing to persist since every prop
+  // below is a static, code-defined default with no Studio-authored
+  // overrides or keyframes, but Theatre still needs a *present* state
+  // object to skip that check. Re-export and replace this file if a future
+  // session starts actually editing values in the Studio panel.
+  state: theatreState,
 });
 
 const sheet = project.sheet("Hero Scene");
