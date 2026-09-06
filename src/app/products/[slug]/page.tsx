@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ButtonLink } from "@/components/ui/Button";
@@ -93,8 +94,19 @@ export default async function ProductPage({
         <div className="shell">
           <Reveal y={26}>
             <div className="overflow-hidden rounded-2xl border border-line shadow-[0_40px_80px_-50px_rgba(8,9,10,0.4)]">
-              <div className="aspect-[16/9]">
-                <ProductGlyph seed={index} accent={product.accent} />
+              <div className="relative aspect-[16/9]">
+                {product.image ? (
+                  <Image
+                    src={product.image}
+                    alt={`Captura de ${product.name}`}
+                    fill
+                    sizes="(min-width: 768px) 1120px, 100vw"
+                    className="object-cover object-top"
+                    priority
+                  />
+                ) : (
+                  <ProductGlyph seed={index} accent={product.accent} />
+                )}
               </div>
             </div>
           </Reveal>

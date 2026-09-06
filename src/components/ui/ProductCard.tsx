@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRef, type PointerEvent } from "react";
 import { Arrow } from "@/components/ui/Button";
@@ -72,7 +73,17 @@ export function ProductCard({
       {/* Artwork */}
       <div className="relative aspect-[16/10] overflow-hidden bg-paper-sunk sm:aspect-[16/9]">
         <div className="absolute inset-0 transition-transform duration-[900ms] ease-[var(--ease-expo)] group-hover:scale-[1.045]">
-          <ProductGlyph seed={index} accent={product.accent} />
+          {product.image ? (
+            <Image
+              src={product.image}
+              alt={`Captura de ${product.name}`}
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover object-top"
+            />
+          ) : (
+            <ProductGlyph seed={index} accent={product.accent} />
+          )}
         </div>
 
         <span className="absolute left-5 top-5 z-20 rounded-full border border-line bg-paper/80 px-3 py-1 font-mono text-[0.625rem] tracking-[0.14em] text-ink-soft uppercase backdrop-blur-sm">
