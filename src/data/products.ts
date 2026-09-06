@@ -31,6 +31,12 @@ export type Product = {
    * Kept subtle — the cards are paper, not posters.
    */
   accent: string;
+  /**
+   * A real screenshot of the product, in `public/`. When present, the card
+   * and product page show this instead of the generated `ProductGlyph` —
+   * leave unset for a product that doesn't have a live UI to show yet.
+   */
+  image?: string;
 };
 
 export const products: Product[] = [
@@ -52,6 +58,7 @@ export const products: Product[] = [
     ],
     href: "https://drivy-rho.vercel.app/",
     accent: "#e8a13a",
+    image: "/products/roady.jpg",
   },
   {
     slug: "gym-tracker",
@@ -71,6 +78,7 @@ export const products: Product[] = [
     ],
     href: "https://gym-tracker-teal-xi.vercel.app/",
     accent: "#ef5b3f",
+    image: "/products/gym-tracker.jpg",
   },
   {
     slug: "velhoura-eyewear",
@@ -89,6 +97,7 @@ export const products: Product[] = [
     ],
     href: "https://velhoura.com/",
     accent: "#171717",
+    image: "/products/velhoura-eyewear.jpg",
   },
   {
     slug: "zhestar",
@@ -106,6 +115,7 @@ export const products: Product[] = [
     ],
     href: "https://www.zhestar.es/",
     accent: "#dc2626",
+    image: "/products/zhestar.jpg",
   },
 ];
 
