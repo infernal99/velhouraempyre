@@ -4,10 +4,6 @@
  * This array is the single source of truth for the Products section and for
  * the /products/[slug] pages. Adding a product = appending an entry here.
  * Nothing in the layout is hardcoded to a fixed number of products.
- *
- * ⚠ The three entries below are STRUCTURED PLACEHOLDERS. No real product
- * information has been provided yet — replace name/summary/description/links
- * with the real projects. Keep the shape intact.
  */
 
 export type ProductCategory = "APP" | "SAAS" | "PLATFORM" | "WEB";
@@ -39,52 +35,77 @@ export type Product = {
 
 export const products: Product[] = [
   {
-    slug: "product-01",
-    name: "Product 01", // PLACEHOLDER
-    summary: "Descripción breve del producto pendiente de definir.",
+    slug: "roady",
+    name: "Roady",
+    summary:
+      "Preparación del examen teórico del permiso B, con repetición espaciada y gamificación.",
     description:
-      "Ficha pendiente. Sustituye este texto por la descripción real del producto: qué problema resuelve, para quién y en qué punto de su desarrollo se encuentra.",
+      "Roady convierte el temario del permiso B en un sistema de estudio diario: preguntas al estilo del examen real, repetición espaciada para no olvidar lo aprendido, y una capa de progreso y rachas que mantiene la constancia sin que se sienta como una obligación.",
     category: "APP",
-    status: "BUILDING",
+    status: "LIVE",
     year: "2026",
     highlights: [
-      "Placeholder — capacidad principal",
-      "Placeholder — capacidad secundaria",
-      "Placeholder — capacidad terciaria",
+      "Banco de preguntas estilo examen oficial",
+      "Repetición espaciada",
+      "Rachas y progreso gamificado",
+      "Cuenta y suscripción con Stripe",
     ],
-    accent: "#0b46ff",
+    href: "https://drivy-rho.vercel.app/",
+    accent: "#e8a13a",
   },
   {
-    slug: "product-02",
-    name: "Product 02", // PLACEHOLDER
-    summary: "Descripción breve del producto pendiente de definir.",
+    slug: "gym-tracker",
+    name: "Gym Tracker",
+    summary:
+      "Registro de entrenamientos con biblioteca de ejercicios, logros y retos entre amigos.",
     description:
-      "Ficha pendiente. Sustituye este texto por la descripción real del producto: qué problema resuelve, para quién y en qué punto de su desarrollo se encuentra.",
-    category: "SAAS",
-    status: "BUILDING",
+      "Gym Tracker lleva el cuaderno de gimnasio a una app real: series, repeticiones y peso por ejercicio, una biblioteca propia de ejercicios, calendario de progreso, logros desbloqueables y retos para comparar constancia con amigos.",
+    category: "APP",
+    status: "LIVE",
     year: "2026",
     highlights: [
-      "Placeholder — capacidad principal",
-      "Placeholder — capacidad secundaria",
-      "Placeholder — capacidad terciaria",
+      "Biblioteca de ejercicios propia (RepDB)",
+      "Calendario y progreso por sesión",
+      "Logros y retos entre amigos",
+      "Asistente con IA local",
     ],
-    accent: "#12121a",
+    href: "https://gym-tracker-teal-xi.vercel.app/",
+    accent: "#ef5b3f",
   },
   {
-    slug: "product-03",
-    name: "Product 03", // PLACEHOLDER
-    summary: "Descripción breve del producto pendiente de definir.",
+    slug: "velhoura-eyewear",
+    name: "Velhoura",
+    summary: "Marca propia de gafas de sol: tienda online, catálogo y checkout completo.",
     description:
-      "Ficha pendiente. Sustituye este texto por la descripción real del producto: qué problema resuelve, para quién y en qué punto de su desarrollo se encuentra.",
-    category: "PLATFORM",
+      "Velhoura es nuestra propia marca de gafas de sol, construida como una tienda online completa: catálogo curado, fichas de producto, checkout y la operativa de una marca D2C real — un ejemplo de cómo llevamos un producto de la idea a la venta.",
+    category: "WEB",
+    status: "LIVE",
+    year: "2025",
+    highlights: [
+      "Catálogo y fichas de producto",
+      "Checkout y gestión de pedidos",
+      "Identidad de marca propia",
+      "Envíos y devoluciones",
+    ],
+    href: "https://velhoura.com/",
+    accent: "#171717",
+  },
+  {
+    slug: "zhestar",
+    name: "Zhestar",
+    summary: "Marca de streetwear en preparación — la web del primer drop, en cuenta atrás.",
+    description:
+      "Zhestar es una marca de ropa en construcción. La web actual presenta el primer drop (\"Drop 001\") antes de su lanzamiento, sentando la identidad de marca y la mecánica de lanzamiento por colecciones limitadas que seguirá creciendo con cada drop.",
+    category: "WEB",
     status: "COMING SOON",
     year: "2026",
     highlights: [
-      "Placeholder — capacidad principal",
-      "Placeholder — capacidad secundaria",
-      "Placeholder — capacidad terciaria",
+      "Identidad de marca",
+      "Mecánica de drops limitados",
+      "Web de lanzamiento",
     ],
-    accent: "#5b4bff",
+    href: "https://www.zhestar.es/",
+    accent: "#dc2626",
   },
 ];
 
