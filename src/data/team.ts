@@ -1,8 +1,4 @@
-/**
- * The two founders.
- * ⚠ founder-02 is still a PLACEHOLDER — the user said they'll pass those
- * details later. Replace `name`, `role` and `bio` there when they do.
- */
+/** The two founders. */
 
 export type Member = {
   id: string;
@@ -26,9 +22,10 @@ export const team: Member[] = [
   },
   {
     id: "founder-02",
-    name: "Founder 02", // PLACEHOLDER
-    role: "Engineering", // PLACEHOLDER
-    bio: "Perfil pendiente. Sustituye este texto por una descripción breve: enfoque, experiencia y qué aporta a cada producto de Velhoura.",
-    monogram: "H",
+    name: "Ian Monfil",
+    role: "Fullstack Developer",
+    bio: "De reparar hardware a construir producto: sistemas y redes primero, después desarrollo web fullstack, con prácticas en Worldline trabajando con React y Next.js en producción. Cofundador de Velhoura.",
+    monogram: "IM",
+    href: "https://portfolio-delta-mauve-61.vercel.app/",
   },
 ];
