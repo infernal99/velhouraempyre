@@ -31,7 +31,7 @@ export function ServicesSection() {
           </div>
         </div>
 
-        <div className="mt-16 grid items-stretch gap-5 md:mt-24 lg:grid-cols-3">
+        <div className="mt-16 grid items-stretch gap-5 sm:grid-cols-2 md:mt-24 xl:grid-cols-4">
           {plans.map((plan, i) => (
             <Reveal key={plan.id} delay={i * 100} y={26} className="h-full">
               <PricingCard plan={plan} />
