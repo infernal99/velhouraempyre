@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ComponentProps, ReactNode } from "react";
+import type { ButtonHTMLAttributes, ComponentProps, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 type Variant = "solid" | "outline" | "ghost";
@@ -71,6 +71,39 @@ export function ButtonLink({
     <Link href={href} className={classes} {...rest}>
       {content}
     </Link>
+  );
+}
+
+type ButtonActionProps = {
+  children: ReactNode;
+  variant?: Variant;
+  size?: Size;
+  arrow?: boolean;
+  className?: string;
+} & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className">;
+
+/**
+ * Same look as `ButtonLink`, but a real `<button>` for actions that don't
+ * navigate — opening the contact modal, for instance.
+ */
+export function ButtonAction({
+  children,
+  variant = "solid",
+  size = "md",
+  arrow = false,
+  className,
+  type = "button",
+  ...rest
+}: ButtonActionProps) {
+  return (
+    <button
+      type={type}
+      className={cn(base, variants[variant], sizes[size], className)}
+      {...rest}
+    >
+      <span>{children}</span>
+      {arrow && <Arrow />}
+    </button>
   );
 }
 

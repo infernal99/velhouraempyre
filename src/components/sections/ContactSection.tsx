@@ -1,11 +1,15 @@
-import { ButtonLink } from "@/components/ui/Button";
+"use client";
+
+import { ButtonAction } from "@/components/ui/Button";
 import { MaskedTitle } from "@/components/ui/MaskedTitle";
 import { Reveal } from "@/components/ui/Reveal";
 import { contact } from "@/data/site";
+import { openContactModal } from "@/lib/contactModal";
 
 /**
- * The close. One instruction, one address, three handles — nothing to fill in
- * on the page itself, so there is no form standing between an idea and an email.
+ * The close. "Start a project" opens the contact modal (mounted once in the
+ * root layout — see `ContactModal`); the email address and socials stay as
+ * plain links for anyone who'd rather write directly.
  */
 export function ContactSection() {
   return (
@@ -43,9 +47,9 @@ export function ContactSection() {
 
           <Reveal delay={340}>
             <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <ButtonLink href={`mailto:${contact.email}`} size="lg" arrow>
+              <ButtonAction size="lg" arrow onClick={openContactModal}>
                 Start a project
-              </ButtonLink>
+              </ButtonAction>
 
               <a
                 href={`mailto:${contact.email}`}

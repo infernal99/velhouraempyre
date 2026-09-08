@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ButtonLink } from "@/components/ui/Button";
+import { ButtonAction } from "@/components/ui/Button";
 import { nav } from "@/data/site";
+import { openContactModal } from "@/lib/contactModal";
 import { cn } from "@/lib/utils";
 
 /**
@@ -83,9 +84,9 @@ export function Navbar() {
               utility, which would otherwise win over a `hidden` on the same
               element regardless of class order. */}
           <span className="hidden sm:block">
-            <ButtonLink href="#contact" size="sm" arrow>
+            <ButtonAction size="sm" arrow onClick={openContactModal}>
               Start a project
-            </ButtonLink>
+            </ButtonAction>
           </span>
 
           <button
@@ -132,15 +133,17 @@ export function Navbar() {
             </Link>
           ))}
 
-          <ButtonLink
-            href="#contact"
+          <ButtonAction
             size="lg"
             arrow
             className="mt-5 w-full"
-            onClick={() => setMenuOpen(false)}
+            onClick={() => {
+              setMenuOpen(false);
+              openContactModal();
+            }}
           >
             Start a project
-          </ButtonLink>
+          </ButtonAction>
         </nav>
       </div>
     </header>
