@@ -7,6 +7,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
   PreviewBusiness,
   PreviewCustom,
+  PreviewEcommerce,
   PreviewLanding,
 } from "@/components/visual/SitePreviews";
 import { cn } from "@/lib/utils";
@@ -50,6 +51,16 @@ const showcases: Showcase[] = [
     preview: <PreviewBusiness />,
   },
   {
+    id: "ecommerce",
+    tier: "Tienda Online",
+    brand: "Solstice",
+    sector: "Artículos de hogar · marca ficticia",
+    blurb:
+      "Tienda D2C completa: catálogo, carrito, checkout con Stripe y gestión de pedidos.",
+    scope: ["Catálogo de producto", "Carrito y checkout", "Pagos con Stripe", "Panel de pedidos"],
+    preview: <PreviewEcommerce />,
+  },
+  {
     id: "custom",
     tier: "Custom",
     brand: "Cadence",
@@ -72,7 +83,7 @@ export function ShowcaseSection() {
         <SectionHeading
           label="05 — Examples"
           lines={["Qué significa", "cada plan."]}
-          subtitle="Tres ejemplos construidos para mostrar el alcance de cada nivel. Las marcas son ficticias."
+          subtitle="Cuatro ejemplos construidos para mostrar el alcance de cada nivel. Las marcas son ficticias."
         />
 
         {/* ── Desktop: tabbed viewer ─────────────────────────────── */}

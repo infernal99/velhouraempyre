@@ -150,7 +150,72 @@ export function PreviewBusiness() {
   );
 }
 
-/* ── Tier 03 · Custom ──────────────────────────────────────────────
+/* ── Tier 03 · Tienda Online ────────────────────────────────────────
+   SOLSTICE — fictional lifestyle goods store. Product grid, cart badge,
+   price tags — the D2C storefront shape. */
+export function PreviewEcommerce() {
+  const products = [
+    ["Funda Terra", "34 €", "#d7ceba"],
+    ["Botella Dune", "28 €", "#c9b8a3"],
+    ["Tote Linen", "22 €", "#e3ddcf"],
+    ["Vela Ash", "18 €", "#b7a893"],
+    ["Bandeja Clay", "26 €", "#dcc9ab"],
+    ["Set Onda", "42 €", "#cdb896"],
+  ] as const;
+
+  return (
+    <div className="flex h-full flex-col bg-[#faf7f2] text-[#211d16]">
+      <div className="flex items-center justify-between border-b border-[#e7e0d3] px-5 py-3">
+        <span className="text-[10px] font-semibold tracking-[0.24em] uppercase">
+          Solstice
+        </span>
+        <div className="hidden gap-4 sm:flex">
+          {["Nuevo", "Colecciones", "Rebajas"].map((l) => (
+            <span key={l} className="text-[7.5px] text-[#7a715f]">
+              {l}
+            </span>
+          ))}
+        </div>
+        <span className="relative text-[10px]">
+          🛍
+          <span className="absolute -right-1.5 -top-1.5 flex size-3 items-center justify-center rounded-full bg-[#211d16] text-[6px] text-[#faf7f2]">
+            2
+          </span>
+        </span>
+      </div>
+
+      <div className="flex items-center justify-between border-b border-[#e7e0d3] bg-[#f1ebdf] px-5 py-1.5">
+        <span className="text-[6.5px] tracking-wide text-[#7a715f]">
+          Envío gratis a partir de 40 €
+        </span>
+        <span className="text-[6.5px] font-medium text-[#211d16] underline underline-offset-2">
+          Ver colección
+        </span>
+      </div>
+
+      <div className="grid flex-1 grid-cols-3 gap-px overflow-hidden bg-[#e7e0d3] px-px pt-px">
+        {products.map(([name, price, color]) => (
+          <div key={name} className="flex flex-col bg-[#faf7f2] p-2">
+            <div
+              className="relative flex-1 rounded-[3px]"
+              style={{ background: color }}
+            >
+              <span className="absolute bottom-1 right-1 flex size-3.5 items-center justify-center rounded-full bg-[#faf7f2] text-[7px] text-[#211d16]">
+                +
+              </span>
+            </div>
+            <p className="mt-1.5 text-[6.5px] font-medium leading-tight">
+              {name}
+            </p>
+            <p className="text-[6.5px] text-[#7a715f]">{price}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── Tier 04 · Custom ──────────────────────────────────────────────
    CADENCE — fictional logistics SaaS. Application shell: sidebar,
    metrics, chart and a live table. */
 export function PreviewCustom() {
