@@ -18,9 +18,9 @@ export const nav = [
   { label: "Contact", href: "/#contact" },
 ] as const;
 
-/** PLACEHOLDER contact channels — swap for the real ones. */
+/** Social handles are still placeholders — swap for the real ones. */
 export const contact = {
-  email: "hello@velhoura.com",
+  email: "velouraianuri@gmail.com",
   socials: [
     { label: "Instagram", href: "#" },
     { label: "LinkedIn", href: "#" },
